@@ -18,15 +18,28 @@ function AdminLogin() {
       window.location.href = "/admin/dashboard";
     } catch (err) {
       alert("Login failed");
+      console.log(err);
     }
   };
 
   return (
-    <div className="login-container">
-      <h2>Admin Login</h2>
-      <input type="text" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-      <button onClick={handleLogin}>Login</button>
+    <div className="login-page">
+      <div className="login-card">
+        <h1>Admin Login</h1>
+
+        <input
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <input
+          placeholder="Password"
+          type="password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button onClick={handleLogin}>Login</button>
+      </div>
     </div>
   );
 }
