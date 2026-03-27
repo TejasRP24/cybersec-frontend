@@ -1,24 +1,33 @@
 import { useEffect, useState } from "react";
-import API from "../../services/api";
+import { getLeaderboard } from "../../services/userService";
+import socket from "../../services/socket";
 import Navbar from '../Common/Navbar';
 import "../../styles/Leaderboard.css";
 
 function Leaderboard() {
   const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    // Mock for now, backend integration later
-    API.get("/api/users")
-      .then((res) => setUsers(res.data))
-      .catch(() => {
-        console.log("Backend not ready");
-        // Mock data
-        setUsers([
-          { _id: 1, name: "Alice", score: 450 },
-          { _id: 2, name: "Bob", score: 380 },
-          { _id: 3, name: "Charlie", score: 320 },
-        ]);
+  const fetchLeaderboard = () => {
+    getLeaderboard()
+      .then((data) => setUsers(data))
+      .catch((err) => {
+        console.error("Failed to fetch leaderboard", err);
+        setUsers([]);
       });
+  };
+
+  useEffect(() => {
+    fetchLeaderboard();
+
+    // Listen for real-time updates
+    socket.on("leaderboardUpdate", () => {
+      console.log("Leaderboard update received via WebSocket");
+      fetchLeaderboard();
+    });
+
+    return () => {
+      socket.off("leaderboardUpdate");
+    };
   }, []);
 
   return (
@@ -30,18 +39,18 @@ function Leaderboard() {
           <thead>
             <tr>
               <th>Rank</th>
-              <th>Name</th>
-              <th>Score</th>
+              <th>Username</th>
+              <th>Total Points</th>
             </tr>
           </thead>
           <tbody>
             {users
-              .sort((a, b) => b.score - a.score)
+              .sort((a, b) => b.totalPoints - a.totalPoints)
               .map((user, index) => (
-                <tr key={user._id}>
+                <tr key={user._id || index}>
                   <td>{index + 1}</td>
-                  <td>{user.name}</td>
-                  <td>{user.score}</td>
+                  <td>{user.username}</td>
+                  <td>{Math.max(0, user.totalPoints)}</td>
                 </tr>
               ))}
           </tbody>

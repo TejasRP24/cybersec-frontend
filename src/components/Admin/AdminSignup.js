@@ -1,5 +1,5 @@
 import { useState } from "react";
-import API from "../../services/api";
+import { adminSignup } from "../../services/adminService";
 import "../../styles/AdminSignup.css";
 
 function AdminSignup() {
@@ -8,7 +8,7 @@ function AdminSignup() {
 
   const handleSignup = async () => {
     try {
-      await API.post("/api/admin/signup", { email, password });
+      await adminSignup({ email, password });
       alert("Signup successful");
     } catch {
       alert("Signup failed");

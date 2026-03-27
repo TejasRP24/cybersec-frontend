@@ -1,27 +1,19 @@
 import { useEffect, useState } from "react";
-import API from "../../services/api";
+import { getAdminQuestions } from "../../services/adminService";
 import "../../styles/QuestionList.css";
 
 function QuestionList({ round }) {
   const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
-    API.get("/api/admin/questions")
-      .then((res) => {
-        const filtered = res.data.filter((q) => q.round === round);
+    getAdminQuestions()
+      .then((data) => {
+        const filtered = data.filter((q) => q.round === round);
         setQuestions(filtered);
       })
-      .catch(() => {
-        console.log("Backend not ready yet");
-
-        //test
-        const mock = [
-          { _id: "1", round: 1, title: "Crypto 101", description: ["Decode this message"] },
-          { _id: "2", round: 2, title: "Web Exploit", description: ["Find vulnerability"] },
-          { _id: "3", round: 3, title: "Forensics", description: ["Trace the file"], links: ["hint1.com"], images: [] },
-        ];
-
-        setQuestions(mock.filter((q) => q.round === round));
+      .catch((err) => {
+        console.error("Failed to fetch questions", err);
+        setQuestions([]); // Clear if error
       });
   }, [round]);
 

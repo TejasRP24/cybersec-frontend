@@ -1,5 +1,5 @@
 import { useState } from "react";
-import API from "../../services/api";
+import { createQuestion } from "../../services/adminService";
 import "../../styles/QuestionForm.css";
 
 function QuestionForm({ round, setRound }) {
@@ -61,13 +61,11 @@ function QuestionForm({ round, setRound }) {
     }
 
     try {
-      await API.post("/api/admin/questions", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      await createQuestion(formData);
       alert("Question uploaded successfully");
     } catch (err) {
-      console.log("Backend not connected yet");
-      alert("Check console (backend not ready)");
+      console.log("Error uploading question");
+      alert("Check console for details");
     }
   };
 

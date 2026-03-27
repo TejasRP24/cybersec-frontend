@@ -1,5 +1,5 @@
 import { useState } from "react";
-import API from "../../services/api";
+import { adminLogin } from "../../services/adminService";
 import "../../styles/AdminLogin.css";
 
 function AdminLogin() {
@@ -8,12 +8,7 @@ function AdminLogin() {
 
   const handleLogin = async () => {
     try {
-      const res = await API.post("/api/admin/login", {
-        email,
-        password,
-      });
-
-      localStorage.setItem("token", res.data.token);
+      await adminLogin({ email, password });
       alert("Login successful");
       window.location.href = "/admin/dashboard";
     } catch (err) {
