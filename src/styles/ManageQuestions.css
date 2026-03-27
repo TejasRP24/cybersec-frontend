@@ -1,0 +1,167 @@
+.manage-questions {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #fff;
+}
+
+.manage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.manage-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0;
+}
+
+.round-selector label {
+    font-weight: bold;
+}
+
+.round-selector select {
+    padding: 0.5rem 1rem;
+    background: #222;
+    color: white;
+    border: 1px solid #444;
+}
+
+.questions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.question-item {
+    background: #111;
+    border: 1px solid #222;
+    padding: 1.5rem;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.question-item:hover {
+    border-color: #ff00ff;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+}
+
+.question-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.question-info h3 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.points-badge {
+    background: #333;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+.question-item p {
+    color: #aaa;
+    margin-bottom: 1.5rem;
+}
+
+.question-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.edit-btn, .delete-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.edit-btn {
+    background: #444;
+    color: white;
+}
+
+.delete-btn {
+    background: #d9534f;
+    color: white;
+}
+
+.empty-msg {
+    text-align: center;
+    color: #888;
+    background: #111;
+    padding: 4rem;
+    border-radius: 8px;
+}
+
+.edit-form-inline {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.edit-form-inline h4 {
+    margin: 1.5rem 0 0.2rem 0;
+    color: #00ffff;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.edit-form-inline input, .edit-form-inline textarea {
+    width: 100%;
+    padding: 0.8rem;
+    background: #000;
+    border: 1px solid #333;
+    color: #fff;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.edit-form-inline textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.edit-form-inline input:focus, .edit-form-inline textarea:focus {
+    border-color: #00ffff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.2);
+}
+
+.save-btn {
+    background: #00ff00 !important;
+    color: #000 !important;
+}
+
+.cancel-btn {
+    background: #555 !important;
+    color: #fff !important;
+}
+
+.question-preview {
+    margin: 1rem 0;
+    border-top: 1px solid #222;
+    padding-top: 1rem;
+}
+
+.question-preview p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #ccc;
+    line-height: 1.4;
+}
+
+.question-preview strong {
+    color: #00ffff;
+    margin-right: 0.5rem;
+}

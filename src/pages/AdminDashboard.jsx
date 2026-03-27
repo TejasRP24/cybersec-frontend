@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Navbar from "../components/Common/Navbar";
-import QuestionList from "../components/Admin/QuestionList";
 import QuestionForm from "../components/Admin/QuestionForm";
 import "../styles/adminDashboard.css";
 
@@ -11,9 +10,8 @@ function AdminDashboard() {
     <div>
       <Navbar />
       <main className="dashboard-content">
-        <h1>Admin Dashboard</h1>
+        <h1>Upload Question</h1>
         <QuestionForm round={round} setRound={setRound} />
-        <QuestionList round={round} />
       </main>
     </div>
   );

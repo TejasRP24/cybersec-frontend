@@ -20,7 +20,12 @@ const Navbar = () => {
         <ul>
           <li className={location.pathname === "/admin/dashboard" ? "active" : ""}>
             <Link to="/admin/dashboard" onClick={() => setOpen(false)}>
-              Dashboard
+              Upload Question
+            </Link>
+          </li>
+          <li className={location.pathname === "/admin/manage-questions" ? "active" : ""}>
+            <Link to="/admin/manage-questions" onClick={() => setOpen(false)}>
+              Manage Questions
             </Link>
           </li>
           <li className={location.pathname === "/admin/leaderboard" ? "active" : ""}>
