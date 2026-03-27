@@ -17,10 +17,12 @@ function AdminSignup() {
 
   return (
     <div className="signup-container">
-      <h2>Admin Signup</h2>
+        <div className = "signup-card">
+            <h2>Admin Signup</h2>
       <input type="text" onChange={(e) => setEmail(e.target.value)} />
       <input type="password" onChange={(e) => setPassword(e.target.value)} />
       <button onClick={handleSignup}>Signup</button>
+        </div>
     </div>
   );
 }

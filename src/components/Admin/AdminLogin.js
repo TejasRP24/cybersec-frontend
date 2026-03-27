@@ -23,7 +23,7 @@ function AdminLogin() {
   };
 
   return (
-    <div className="login-page">
+    <div className="login-container">
       <div className="login-card">
         <h1>Admin Login</h1>
 
