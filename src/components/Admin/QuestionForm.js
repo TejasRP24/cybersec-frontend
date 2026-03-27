@@ -2,8 +2,7 @@ import { useState } from "react";
 import API from "../../services/api";
 import "../../styles/QuestionForm.css";
 
-function QuestionForm() {
-  const [round, setRound] = useState(1);
+function QuestionForm({ round, setRound }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState([""]);
   const [answers, setAnswers] = useState([""]);
@@ -24,102 +23,69 @@ function QuestionForm() {
   };
 
   const handleLinkChange = (index, value) => {
-  const newLinks = [...links];
-  newLinks[index] = value;
-  setLinks(newLinks);
+    const newLinks = [...links];
+    newLinks[index] = value;
+    setLinks(newLinks);
   };
 
-  const addLink = () => {
-    setLinks([...links, ""]);
-  };
+  const addLink = () => setLinks([...links, ""]);
+  const removeLink = (index) => setLinks(links.filter((_, i) => i !== index));
 
-  const removeLink = (index) => {
-  const newLinks = links.filter((_, i) => i !== index);
-        setLinks(newLinks);
-  };
-
-  // add new field (only for round 3 & 4)
   const addField = () => {
     if (round < 3) return;
     setDescription([...description, ""]);
     setAnswers([...answers, ""]);
   };
 
-  // remove field
   const removeField = (index) => {
-    const newDesc = description.filter((_, i) => i !== index);
-    const newAns = answers.filter((_, i) => i !== index);
-    setDescription(newDesc);
-    setAnswers(newAns);
+    setDescription(description.filter((_, i) => i !== index));
+    setAnswers(answers.filter((_, i) => i !== index));
   };
 
-//check
-/*if (!title || description.some(d => !d) || answers.some(a => !a)) {
-alert("Please fill all fields");
-return;
-}*/
-
-<div>
-    <label>Upload Images</label>
-    <input
-        type="file"
-        multiple
-        onChange={(e) => setImages(e.target.files)}
-    />
-</div>
-
   const handleSubmit = async () => {
-  if (!title || description.some(d => !d) || answers.some(a => !a)) {
-    alert("Please fill all fields");
-    return;
-  }
+    if (!title || description.some(d => !d) || answers.some(a => !a)) {
+      alert("Please fill all fields");
+      return;
+    }
 
-  const formData = new FormData();
+    const formData = new FormData();
+    formData.append("round", round);
+    formData.append("title", title);
+    formData.append("base_point", basePoint);
+    formData.append("description", JSON.stringify(description));
+    formData.append("answers", JSON.stringify(answers));
+    formData.append("links", JSON.stringify(links));
 
-  formData.append("round", round);
-  formData.append("title", title);
-  formData.append("base_point", basePoint);
+    for (let i = 0; i < images.length; i++) {
+      formData.append("images", images[i]);
+    }
 
-  formData.append("description", JSON.stringify(description));
-  formData.append("answers", JSON.stringify(answers));
-  formData.append("links", JSON.stringify(links));
+    try {
+      await API.post("/api/admin/questions", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      alert("Question uploaded successfully");
+    } catch (err) {
+      console.log("Backend not connected yet");
+      alert("Check console (backend not ready)");
+    }
+  };
 
-  for (let i = 0; i < images.length; i++) {
-    formData.append("images", images[i]);
-  }
+  const handleRoundChange = (e) => {
+    const selectedRound = Number(e.target.value);
+    setRound(selectedRound);
 
-  console.log("Submitting FormData");
-
-  try {
-    await API.post("/api/admin/questions", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
-    alert("Question uploaded successfully");
-  } catch (err) {
-    console.log("Backend not connected yet");
-    alert("Check console (backend not ready)");
-  }
-};
+    setDescription([""]);
+    setAnswers([""]);
+    setLinks([""]);
+    setImages([]);
+  };
 
   return (
     <div className="form-card">
       <h2>Upload Question</h2>
 
-      <select
-        value={round}
-        onChange={(e) => {
-          const selectedRound = Number(e.target.value);
-          setRound(selectedRound);
-
-          // reset fields when switching rounds
-          setDescription([""]);
-          setAnswers([""]);
-          setLinks([""]);
-        }}
-      >
+      <select value={round} onChange={handleRoundChange}>
         <option value={1}>Round 1</option>
         <option value={2}>Round 2</option>
         <option value={3}>Round 3</option>
@@ -137,17 +103,13 @@ return;
           <textarea
             placeholder={`Question ${index + 1}`}
             value={desc}
-            onChange={(e) =>
-              handleDescriptionChange(index, e.target.value)
-            }
+            onChange={(e) => handleDescriptionChange(index, e.target.value)}
           />
 
           <input
             placeholder={`Answer ${index + 1}`}
             value={answers[index]}
-            onChange={(e) =>
-              handleAnswerChange(index, e.target.value)
-            }
+            onChange={(e) => handleAnswerChange(index, e.target.value)}
           />
 
           {/* Remove button (only for round 3 & 4) */}
@@ -157,39 +119,40 @@ return;
         </div>
       ))}
 
-      {/* Add button (only for round 3 & 4) */}
+      {/* Add new question field button (only for round 3 & 4) */}
       {round >= 3 && (
         <button type="button" onClick={addField}>Add Question</button>
       )}
 
+      {/* Links / Images section for round 3 & 4 */}
       {round >= 3 && (
-        <div>
-          <h4>Links / Hints</h4>
+        <div className="links-images-section">
+          <h4>Links / Images</h4>
 
+          {/* Links */}
           {links.map((link, index) => (
-            <div key={index}>
+            <div key={index} className="link-input">
               <input
                 placeholder={`Link ${index + 1}`}
                 value={link}
-                onChange={(e) =>
-                  handleLinkChange(index, e.target.value)
-                }
+                onChange={(e) => handleLinkChange(index, e.target.value)}
               />
-
               {links.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removeLink(index)}
-                >
-                  Remove
-                </button>
+                <button type="button" onClick={() => removeLink(index)}>Remove</button>
               )}
             </div>
           ))}
+          <button type="button" onClick={addLink}>Add Link</button>
 
-          <button type="button" onClick={addLink}>
-            Add Link
-          </button>
+          {/* Image uploads */}
+          <div style={{ marginTop: "1rem" }}>
+            <label>Upload Images</label>
+            <input
+              type="file"
+              multiple
+              onChange={(e) => setImages(e.target.files)}
+            />
+          </div>
         </div>
       )}
 

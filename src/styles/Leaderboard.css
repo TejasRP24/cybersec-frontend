@@ -1,0 +1,43 @@
+.leaderboard-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background: rgba(2, 6, 23, 0.9);
+  border-radius: 12px;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.15);
+}
+
+.leaderboard-container h2 {
+  text-align: center;
+  color: #22c55e;
+  font-family: 'Share Tech Mono', monospace;
+  margin-bottom: 20px;
+}
+
+.leaderboard-container table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #e5e7eb;
+  font-family: 'Inter', sans-serif;
+}
+
+.leaderboard-container th,
+.leaderboard-container td {
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  padding: 10px;
+  text-align: center;
+}
+
+.leaderboard-container th {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+
+.leaderboard-container tr:nth-child(even) {
+  background: rgba(34, 197, 94, 0.05);
+}
+
+.leaderboard-container tr:hover {
+  background: rgba(34, 197, 94, 0.15);
+}

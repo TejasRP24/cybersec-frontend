@@ -1,0 +1,12 @@
+.dashboard-content {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.dashboard-content h1 {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  color: #22c55e;
+}
