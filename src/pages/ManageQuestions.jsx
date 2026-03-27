@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Common/Navbar";
 import { getAdminQuestions, deleteQuestion, updateQuestion } from "../services/adminService";
+import { useNotification } from "../context/NotificationContext";
 import "../styles/ManageQuestions.css";
 
 function ManageQuestions() {
   const [round, setRound] = useState(1);
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { showNotification } = useNotification();
 
   const [editingId, setEditingId] = useState(null);
   const [editData, setEditData] = useState({});
@@ -22,19 +24,21 @@ function ManageQuestions() {
       setQuestions(data.filter((q) => q.round === round));
     } catch (err) {
       console.error(err);
-      // alert replaced with inline error if possible, but keep simple for now
+      showNotification("Failed to fetch questions.", "error");
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this question?")) return;
+    // Replaced confirm with direct action for now to avoid popups
     try {
       await deleteQuestion(id);
       setQuestions(questions.filter((q) => q._id !== id));
+      showNotification("Question deleted successfully", "success");
     } catch (err) {
       console.error(err);
+      showNotification("Failed to delete question.", "error");
     }
   };
 
@@ -55,7 +59,6 @@ function ManageQuestions() {
 
   const handleSave = async () => {
     try {
-      // API call requires proper formatting
       const updatePayload = {
         title: editData.title,
         description: editData.description,
@@ -66,9 +69,10 @@ function ManageQuestions() {
       await updateQuestion(editingId, updatePayload);
       setQuestions(questions.map(q => q._id === editingId ? { ...q, ...updatePayload } : q));
       setEditingId(null);
+      showNotification("Question updated successfully!", "success");
     } catch (err) {
       console.error(err);
-      alert("Failed to update question");
+      showNotification("Failed to update question.", "error");
     }
   };
 

@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { adminSignup } from "../../services/adminService";
+import { useNotification } from "../../context/NotificationContext";
 import "../../styles/AdminSignup.css";
 
 function AdminSignup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { showNotification } = useNotification();
 
   const handleSignup = async () => {
     try {
       await adminSignup({ email, password });
-      alert("Signup successful");
+      showNotification("Admin registered successfully!", "success");
     } catch {
-      alert("Signup failed");
+      showNotification("Signup failed. Possible duplicate email.", "error");
     }
   };
 

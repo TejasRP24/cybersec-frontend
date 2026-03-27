@@ -1,18 +1,22 @@
 import { useState } from "react";
 import { adminLogin } from "../../services/adminService";
+import { useNotification } from "../../context/NotificationContext";
 import "../../styles/AdminLogin.css";
 
 function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { showNotification } = useNotification();
 
   const handleLogin = async () => {
     try {
       await adminLogin({ email, password });
-      alert("Login successful");
-      window.location.href = "/admin/dashboard";
+      showNotification("Login successful", "success");
+      setTimeout(() => {
+        window.location.href = "/admin/dashboard";
+      }, 500);
     } catch (err) {
-      alert("Login failed");
+      showNotification("Login failed. Check credentials.", "error");
       console.log(err);
     }
   };

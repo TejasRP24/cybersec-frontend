@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createQuestion } from "../../services/adminService";
+import { useNotification } from "../../context/NotificationContext";
 import "../../styles/QuestionForm.css";
 
 function QuestionForm({ round, setRound }) {
@@ -9,6 +10,7 @@ function QuestionForm({ round, setRound }) {
   const [links, setLinks] = useState([""]);
   const [images, setImages] = useState([]);
   const [basePoint, setBasePoint] = useState(100);
+  const { showNotification } = useNotification();
 
   const handleDescriptionChange = (index, value) => {
     const newDesc = [...description];
@@ -44,7 +46,7 @@ function QuestionForm({ round, setRound }) {
 
   const handleSubmit = async () => {
     if (!title || description.some(d => !d) || answers.some(a => !a)) {
-      alert("Please fill all fields");
+      showNotification("Please fill all fields before uploading.", "error");
       return;
     }
 
@@ -62,10 +64,16 @@ function QuestionForm({ round, setRound }) {
 
     try {
       await createQuestion(formData);
-      alert("Question uploaded successfully");
+      showNotification("Question uploaded successfully!", "success");
+      
+      // Reset form
+      setTitle("");
+      setDescription([""]);
+      setAnswers([""]);
+      setLinks([""]);
+      setImages([]);
     } catch (err) {
-      console.log("Error uploading question");
-      alert("Check console for details");
+      showNotification("Upload failed. Verify backend and images.", "error");
     }
   };
 
