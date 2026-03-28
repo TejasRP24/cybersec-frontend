@@ -40,7 +40,14 @@
   transition: 0.2s;
 }
 
-.form-card button:hover {
+.form-card button:hover:not(:disabled) {
   background: #16a34a;
   transform: scale(1.05);
+}
+
+.form-card button:disabled {
+  background: #064e3b;
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.7;
 }

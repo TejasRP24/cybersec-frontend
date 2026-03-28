@@ -10,6 +10,7 @@ function QuestionForm({ round, setRound }) {
   const [links, setLinks] = useState([""]);
   const [images, setImages] = useState([]);
   const [basePoint, setBasePoint] = useState(100);
+  const [isUploading, setIsUploading] = useState(false);
   const { showNotification } = useNotification();
 
   const handleDescriptionChange = (index, value) => {
@@ -50,6 +51,8 @@ function QuestionForm({ round, setRound }) {
       return;
     }
 
+    setIsUploading(true);
+
     const formData = new FormData();
     formData.append("round", round);
     formData.append("title", title);
@@ -80,6 +83,8 @@ function QuestionForm({ round, setRound }) {
       setImages([]);
     } catch (err) {
       showNotification("Upload failed. Verify backend and images.", "error");
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -177,7 +182,9 @@ function QuestionForm({ round, setRound }) {
         onChange={(e) => setBasePoint(Number(e.target.value))}
       />
 
-      <button type="button" onClick={handleSubmit}>Submit</button>
+      <button type="button" onClick={handleSubmit} disabled={isUploading}>
+        {isUploading ? "Uploading..." : "Submit"}
+      </button>
     </div>
   );
 }
