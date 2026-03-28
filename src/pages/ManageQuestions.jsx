@@ -136,18 +136,38 @@ function ManageQuestions() {
                       />
                     ))}
 
-                    {round >= 3 && (
+                    {editData.links && editData.links.length > 0 && (
                       <>
-                        <h4>Links</h4>
+                        <h4>{round <= 3 ? "Image URLs (MinIO)" : "Links"}</h4>
                         {editData.links.map((link, i) => (
-                          <input 
-                            key={i} 
-                            value={link} 
-                            onChange={(e) => handleArrayChange("links", i, e.target.value)}
-                            placeholder={`Link ${i+1}`}
-                          />
+                          <div key={i} style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                            <input 
+                              style={{ flex: 1 }}
+                              value={link} 
+                              onChange={(e) => handleArrayChange("links", i, e.target.value)}
+                              placeholder={round <= 3 ? `Image URL ${i+1}` : `Link ${i+1}`}
+                            />
+                            <button 
+                              type="button" 
+                              onClick={() => {
+                                const newLinks = editData.links.filter((_, index) => index !== i);
+                                handleEditChange("links", newLinks);
+                              }}
+                            >
+                              Remove
+                            </button>
+                          </div>
                         ))}
                       </>
+                    )}
+                    {round === 4 && (
+                      <button 
+                        type="button" 
+                        onClick={() => handleEditChange("links", [...(editData.links || []), ""])}
+                        style={{ marginBottom: '10px' }}
+                      >
+                        Add Link
+                      </button>
                     )}
 
                     <div className="question-actions">

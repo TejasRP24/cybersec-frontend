@@ -54,12 +54,18 @@ function QuestionForm({ round, setRound }) {
     formData.append("round", round);
     formData.append("title", title);
     formData.append("base_point", basePoint);
-    formData.append("description", JSON.stringify(description));
-    formData.append("answers", JSON.stringify(answers));
-    formData.append("links", JSON.stringify(links));
+    
+    description.forEach((d) => formData.append("description", d));
+    answers.forEach((a) => formData.append("answers", a));
 
-    for (let i = 0; i < images.length; i++) {
-      formData.append("images", images[i]);
+    if (round === 4) {
+      links.filter(Boolean).forEach((link) => formData.append("links", link));
+    }
+
+    if (round <= 3) {
+      for (let i = 0; i < images.length; i++) {
+        formData.append("images", images[i]);
+      }
     }
 
     try {
@@ -130,37 +136,39 @@ function QuestionForm({ round, setRound }) {
         <button type="button" onClick={addField}>Add Question</button>
       )}
 
-      {/* Links / Images section for round 3 & 4 */}
-      {round >= 3 && (
-        <div className="links-images-section">
-          <h4>Links / Images</h4>
-
-          {/* Links */}
-          {links.map((link, index) => (
-            <div key={index} className="link-input">
-              <input
-                placeholder={`Link ${index + 1}`}
-                value={link}
-                onChange={(e) => handleLinkChange(index, e.target.value)}
-              />
-              {links.length > 1 && (
-                <button type="button" onClick={() => removeLink(index)}>Remove</button>
-              )}
-            </div>
-          ))}
-          <button type="button" onClick={addLink}>Add Link</button>
-
-          {/* Image uploads */}
+      {/* Links / Images section */}
+      <div className="links-images-section">
+        {round <= 3 ? (
+          /* Image uploads for Round 1, 2, 3 */
           <div style={{ marginTop: "1rem" }}>
-            <label>Upload Images</label>
+            <label>Upload Images for Round {round}</label>
             <input
               type="file"
               multiple
+              accept="image/*"
               onChange={(e) => setImages(e.target.files)}
             />
           </div>
-        </div>
-      )}
+        ) : (
+          /* Links for Round 4 */
+          <div style={{ marginTop: "1rem" }}>
+            <h4>Links (Round 4)</h4>
+            {links.map((link, index) => (
+              <div key={index} className="link-input">
+                <input
+                  placeholder={`Link ${index + 1}`}
+                  value={link}
+                  onChange={(e) => handleLinkChange(index, e.target.value)}
+                />
+                {links.length > 1 && (
+                  <button type="button" onClick={() => removeLink(index)}>Remove</button>
+                )}
+              </div>
+            ))}
+            <button type="button" onClick={addLink}>Add Link</button>
+          </div>
+        )}
+      </div>
 
       <input
         type="number"
