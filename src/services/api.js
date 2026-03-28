@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://cybersec-event-backend.onrender.com",
+  baseURL: "https://backendinfinitum.psgtech.ac.in/",
 });
 
 API.interceptors.request.use((req) => {

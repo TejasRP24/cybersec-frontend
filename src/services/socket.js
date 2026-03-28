@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-const SOCKET_URL = "https://cybersec-event-backend.onrender.com";
+const SOCKET_URL = "https://backendinfinitum.psgtech.ac.in/";
 
 const socket = io(SOCKET_URL, {
   withCredentials: true,
