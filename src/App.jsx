@@ -7,16 +7,15 @@ import Leaderboard from "./components/Admin/Leaderboard";
 import { NotificationProvider } from "./context/NotificationContext";
 
 function App() {
-  const token = localStorage.getItem("token");
-
   return (
     <NotificationProvider>
       <Router>
         <Routes>
-          <Route path="/" element={token ? <Navigate to="/admin/dashboard" /> : <Navigate to="/admin/login" />} />
+          {/* Always land on login page by default */}
+          <Route path="/" element={<Navigate to="/admin/login" />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/signup" element={<AdminSignup />} />
-          
+
           {/* Protected Routes (Optional: could add a wrapper component) */}
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/manage-questions" element={<ManageQuestions />} />
